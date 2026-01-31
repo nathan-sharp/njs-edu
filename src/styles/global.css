@@ -1,67 +1,61 @@
+/* src/styles/global.css */
+
 :root {
-	/* 1. Core Colors */
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
+	/* 1. PALETTE DEFINITIONS (From your list) */
+	--p-navy-dark: #232436;
+	--p-navy-light: #48495d;
+	--p-silver: #BDBAC3;
+	--p-beige: #E8CDAF;
+	--p-bronze: #C38D69;
+	--p-brown: #794635;
+	--p-blue: #A6C4DC;
+	--p-red: #A56F68;
 
-	/* 2. Semantic Colors (Light Mode Defaults) */
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--black: 15, 18, 25;
+	/* 2. LIGHT MODE MAPPING (Parchment Style) */
+	--accent: var(--p-brown);      /* Links/Buttons: Brown */
+	--accent-dark: var(--p-navy-dark);
+    --accent-hover: var(--p-bronze);
 
-	/* UI Specific Backgrounds - LIGHT */
-	--bg-body: #ffffff;
-	--bg-header: #ffffff;      /* Bright header */
-	--bg-sidebar: #f8f9fa;     /* Light gray sidebar */
-	--bg-card: #ffffff;        /* White card/dropdowns */
-	--bg-hover: #eeeeee;
-	--bg-active: #eef2ff;
+	--bg-body: #ffffff;            /* Main Content: White */
+	--bg-header: var(--p-beige);   /* Header: Beige */
+	--bg-sidebar: var(--p-beige);  /* Sidebar: Beige */
+	--bg-card: #ffffff;            /* Cards: White */
+	--bg-hover: rgba(195, 141, 105, 0.2); /* Light Bronze tint */
+	--bg-active: rgba(121, 70, 53, 0.1);  /* Light Brown tint */
 	
-	--text-main: rgb(var(--gray-dark));
-	--border-color: #eeeeee;   /* Light gray borders */
+	--text-main: var(--p-navy-dark); /* Text: Dark Navy */
+    --text-muted: var(--p-navy-light);
+	--border-color: #d4bda5;       /* Darker beige for borders */
 
-	--bg-gradient: linear-gradient(rgba(var(--gray-light), 50%), #fff);
-	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%);
+    /* Subtle gradient for the background "feel" */
+	--bg-gradient: linear-gradient(rgba(232, 205, 175, 0.3), #fff);
+	--box-shadow: 0 2px 6px rgba(35, 36, 54, 0.1), 0 8px 24px rgba(35, 36, 54, 0.15);
 }
+
+/* 3. DARK MODE MAPPING (Night Style) */
 [data-theme='dark'] {
-	--accent: #4f5eff;
-	--accent-dark: #2337ff;
-	
-	--gray: 160, 170, 200;
-	--gray-light: 40, 45, 60;
-	--gray-dark: 220, 230, 240;
-	--black: 240, 240, 240;
+	--accent: var(--p-blue);       /* Links/Buttons: Light Blue */
+	--accent-dark: var(--p-bronze);
+    --accent-hover: #fff;
 
-	/* UI Specific Backgrounds - DARK */
-	--bg-body: #121217;
-	--bg-header: #1a1d26;      /* Slightly lighter than body for contrast */
-	--bg-sidebar: #1a1d26;
-	--bg-card: #232630;
-	--bg-hover: #2c303b;
-	--bg-active: rgba(79, 94, 255, 0.2); /* Semi-transparent accent */
+	--bg-body: var(--p-navy-dark);   /* Main BG: Dark Navy */
+	--bg-header: var(--p-navy-light);/* Header: Light Navy */
+	--bg-sidebar: var(--p-navy-light);/* Sidebar: Light Navy */
+	--bg-card: var(--p-navy-light);  /* Cards: Light Navy */
+	--bg-hover: rgba(166, 196, 220, 0.1); /* Light Blue tint */
+	--bg-active: rgba(166, 196, 220, 0.2);
 	
-	--text-main: rgb(var(--gray-dark));
-	--border-color: #3e4c6e;   /* Darker borders */
+	--text-main: var(--p-silver);    /* Text: Silver */
+    --text-muted: #8a8b9c;
+	--border-color: #353646;         /* Slightly lighter navy */
 
-	--bg-gradient: linear-gradient(#1a1d26, #121217);
-	--box-shadow: 0 2px 6px rgba(0,0,0, 0.5), 0 8px 24px rgba(0,0,0, 0.6);
+	--bg-gradient: linear-gradient(var(--p-navy-dark), var(--p-navy-dark));
+	--box-shadow: 0 2px 6px rgba(0,0,0, 0.4), 0 8px 24px rgba(0,0,0, 0.5);
 }
-@font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-regular.woff") format("woff");
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
-@font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-bold.woff") format("woff");
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
+
+/* 4. GLOBAL RESETS */
 body {
-	font-family: "Atkinson", sans-serif;
+	font-family: "Times New Roman", Times, serif; /* UPDATED FONT */
 	margin: 0;
 	padding: 0;
 	text-align: left;
@@ -73,113 +67,101 @@ body {
 	line-height: 1.7;
 	min-height: 100vh;
 }
+
 main {
-	width: 720px;
-	max-width: calc(100% - 2em);
+	width: 100%;
+	max-width: 1200px;
 	margin: auto;
 	padding: 3em 1em;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+
+h1, h2, h3, h4, h5, h6 {
 	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
+	color: var(--text-main);
 	line-height: 1.2;
+    font-weight: bold;
 }
-h1 {
-	font-size: 3.052em;
-}
-h2 {
-	font-size: 2.441em;
-}
-h3 {
-	font-size: 1.953em;
-}
-h4 {
-	font-size: 1.563em;
-}
-h5 {
-	font-size: 1.25em;
-}
-strong,
-b {
-	font-weight: 700;
-}
+
+h1 { font-size: 3.052em; }
+h2 { font-size: 2.441em; }
+h3 { font-size: 1.953em; }
+h4 { font-size: 1.563em; }
+h5 { font-size: 1.25em; }
+
+strong, b { font-weight: 700; }
+
 a {
 	color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s;
 }
 a:hover {
-	color: var(--accent);
+	color: var(--accent-hover);
+    text-decoration: underline;
 }
-p {
-	margin-bottom: 1em;
-}
-.prose p {
-	margin-bottom: 2em;
-}
-textarea {
+
+p { margin-bottom: 1em; }
+.prose p { margin-bottom: 2em; }
+
+textarea, input {
 	width: 100%;
 	font-size: 16px;
+    font-family: inherit; /* Ensure inputs use Times New Roman too */
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--bg-card);
+    color: var(--text-main);
 }
-input {
-	font-size: 16px;
-}
-table {
-	width: 100%;
-}
+
 img {
 	max-width: 100%;
 	height: auto;
 	border-radius: 8px;
 }
+
 code {
 	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
+	background-color: var(--bg-sidebar);
 	border-radius: 2px;
+    font-family: monospace; /* Keep code monospace */
 }
+
 pre {
 	padding: 1.5em;
 	border-radius: 8px;
+    background-color: var(--p-navy-dark);
+    color: var(--p-silver);
 }
-pre > code {
-	all: unset;
-}
+pre > code { all: unset; }
+
 blockquote {
 	border-left: 4px solid var(--accent);
 	padding: 0 0 0 20px;
 	margin: 0px;
 	font-size: 1.333em;
-}
-hr {
-	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
-}
-@media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
-	main {
-		padding: 1em;
-	}
+    font-style: italic;
+    background: rgba(189, 186, 195, 0.1); /* Subtle silver tint */
 }
 
+hr {
+	border: none;
+	border-top: 1px solid var(--border-color);
+    margin: 2rem 0;
+}
+
+@media (max-width: 720px) {
+	body { font-size: 18px; }
+	main { padding: 1em; }
+}
+
+/* Accessibility */
 .sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
+	border: 0; padding: 0; margin: 0;
 	position: absolute !important;
-	height: 1px;
-	width: 1px;
+	height: 1px; width: 1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
 	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
-	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
 	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }
