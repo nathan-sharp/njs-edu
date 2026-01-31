@@ -1,20 +1,50 @@
-/*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
-
 :root {
+	/* 1. Core Colors */
 	--accent: #2337ff;
 	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
+
+	/* 2. Semantic Colors (Light Mode Defaults) */
 	--gray: 96, 115, 159;
 	--gray-light: 229, 233, 240;
 	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+	--black: 15, 18, 25;
+
+	/* UI Specific Backgrounds - LIGHT */
+	--bg-body: #ffffff;
+	--bg-header: #ffffff;      /* Bright header */
+	--bg-sidebar: #f8f9fa;     /* Light gray sidebar */
+	--bg-card: #ffffff;        /* White card/dropdowns */
+	--bg-hover: #eeeeee;
+	--bg-active: #eef2ff;
+	
+	--text-main: rgb(var(--gray-dark));
+	--border-color: #eeeeee;   /* Light gray borders */
+
+	--bg-gradient: linear-gradient(rgba(var(--gray-light), 50%), #fff);
+	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%);
+}
+[data-theme='dark'] {
+	--accent: #4f5eff;
+	--accent-dark: #2337ff;
+	
+	--gray: 160, 170, 200;
+	--gray-light: 40, 45, 60;
+	--gray-dark: 220, 230, 240;
+	--black: 240, 240, 240;
+
+	/* UI Specific Backgrounds - DARK */
+	--bg-body: #121217;
+	--bg-header: #1a1d26;      /* Slightly lighter than body for contrast */
+	--bg-sidebar: #1a1d26;
+	--bg-card: #232630;
+	--bg-hover: #2c303b;
+	--bg-active: rgba(79, 94, 255, 0.2); /* Semi-transparent accent */
+	
+	--text-main: rgb(var(--gray-dark));
+	--border-color: #3e4c6e;   /* Darker borders */
+
+	--bg-gradient: linear-gradient(#1a1d26, #121217);
+	--box-shadow: 0 2px 6px rgba(0,0,0, 0.5), 0 8px 24px rgba(0,0,0, 0.6);
 }
 @font-face {
 	font-family: "Atkinson";
@@ -35,13 +65,13 @@ body {
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
+	background: var(--bg-gradient) no-repeat;
+	background-color: var(--bg-body);
 	background-size: 100% 600px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
+	color: var(--text-main);
 	font-size: 20px;
 	line-height: 1.7;
+	min-height: 100vh;
 }
 main {
 	width: 720px;

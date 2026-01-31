@@ -1,0 +1,66 @@
+---
+---
+<div class="theme-switch-wrapper">
+    <label for="theme-select" class="sr-only">Choose Theme</label>
+    <select id="theme-select" name="theme" class="theme-select">
+        <option value="light">☀️ Light</option>
+        <option value="dark">🌙 Dark</option>
+        <option value="auto">🤖 Auto</option>
+    </select>
+</div>
+
+<style>
+    .theme-select {
+        background-color: rgba(var(--gray-light), 0.5);
+        color: var(--black); /* Will automatically switch color */
+        border: 1px solid rgba(var(--gray), 0.5);
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-family: inherit;
+        font-size: 0.9em;
+        cursor: pointer;
+    }
+    .theme-select:hover {
+        border-color: var(--accent);
+    }
+</style>
+
+<script is:inline>
+    // 1. Logic to apply the theme
+    const applyTheme = (theme) => {
+        const root = document.documentElement;
+        
+        if (theme === 'auto') {
+            // Check system preference
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            root.setAttribute('data-theme', systemDark ? 'dark' : 'light');
+        } else {
+            root.setAttribute('data-theme', theme);
+        }
+        
+        // Save choice
+        localStorage.setItem('theme', theme);
+    };
+
+    // 2. Initial Setup on Page Load
+    const storedTheme = localStorage.getItem('theme') || 'auto';
+    const select = document.getElementById('theme-select');
+    
+    // Set the dropdown value
+    if (select) select.value = storedTheme;
+    
+    // Apply the theme immediately
+    applyTheme(storedTheme);
+
+    // 3. Listen for changes on the dropdown
+    select?.addEventListener('change', (e) => {
+        applyTheme(e.target.value);
+    });
+
+    // 4. Listen for system changes (if user is in 'auto' mode)
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        if (localStorage.getItem('theme') === 'auto') {
+            applyTheme('auto');
+        }
+    });
+</script>

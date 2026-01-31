@@ -3,5 +3,5 @@
   "description": "A comprehensive course covering Higher Mathematics.",
   "level": "Higher",
   "levelId": "l6",
-  "units": ["algebra", "calculus"]
+  "units": ["algebra", "dynamics"]
 }

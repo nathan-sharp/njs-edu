@@ -1,5 +1,4 @@
 ---
-// src/pages/courses/[courseId]/[...slug].astro
 import { getCollection, render } from 'astro:content';
 import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
@@ -56,29 +55,65 @@ const unitsMap = courseLOs.reduce((acc, entry) => {
 		<style>
 			.course-container {
 				display: grid;
-				grid-template-columns: 280px 1fr;
+				grid-template-columns: 280px 1fr 300px;
 				gap: 2rem;
-				max-width: 1200px;
-				margin: 0 auto;
-				padding: 2rem 1rem;
+				width: 100%;
+				max-width: 100%; 
+				padding: 2rem;
+				box-sizing: border-box;
 				min-height: 80vh;
 			}
-			aside {
-				background: #f8f9fa;
+
+			/* SIDEBAR STYLES UPDATED */
+			aside.nav-sidebar {
+				background: var(--bg-sidebar); /* UPDATED */
 				padding: 1.5rem;
 				border-radius: 8px;
 				height: fit-content;
+				position: sticky;
+				top: 2rem;
+				border: 1px solid var(--border-color); /* Added border for better contrast */
 			}
+
+			main.content-area {
+				max-width: 900px; 
+				margin: 0 auto; 
+				width: 100%;
+			}
+
+			aside.ad-sidebar {
+				height: 100%;
+			}
+			
+			.ad-container {
+				position: sticky;
+				top: 2rem;
+				width: 100%;
+				min-height: 600px;
+				/* UPDATED AD CONTAINER COLORS */
+				background-color: var(--bg-sidebar); 
+				border: 1px dashed var(--border-color);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+				color: var(--gray);
+				border-radius: 8px;
+			}
+
 			details { margin-bottom: 0.5rem; }
+			
 			summary {
 				cursor: pointer;
 				font-weight: bold;
 				padding: 0.5rem;
 				list-style: none;
-				background-color: #fff;
-				border: 1px solid #eee;
+				background-color: var(--bg-card); /* UPDATED */
+				border: 1px solid var(--border-color); /* UPDATED */
 				border-radius: 4px;
+				color: var(--text-main); /* UPDATED */
 			}
+			
 			summary::-webkit-details-marker { display: none; }
 			summary::after { content: "+"; float: right; }
 			details[open] summary::after { content: "-"; }
@@ -89,45 +124,69 @@ const unitsMap = courseLOs.reduce((acc, entry) => {
 				flex-direction: column;
 				gap: 0.25rem;
 			}
+			
 			.lo-link {
 				text-decoration: none;
-				color: #444;
+				color: var(--text-main); /* UPDATED */
 				padding: 0.4rem 0.4rem 0.4rem 1rem;
 				font-size: 0.95rem;
 				border-left: 3px solid transparent;
+				transition: background-color 0.2s;
 			}
-			.lo-link:hover { color: var(--accent); background: #eee; }
+			
+			.lo-link:hover { 
+				color: var(--accent); 
+				background: var(--bg-hover); /* UPDATED */
+			}
+			
 			.lo-link.active {
 				border-left-color: var(--accent);
 				color: var(--accent);
 				font-weight: bold;
-				background: #eef2ff;
+				background: var(--bg-active); /* UPDATED */
 			}
-			.content-area { padding: 0 1rem; }
-            .unit-badge { 
-                font-size: 0.8em; 
-                color: #666; 
-                margin-bottom: 0.5rem; 
-                display: block; 
-                text-transform: uppercase; 
-                letter-spacing: 1px;
-                font-weight: bold;
-            }
+			
+			.unit-badge { 
+				font-size: 0.8em; 
+				color: var(--gray); /* UPDATED */
+				margin-bottom: 0.5rem; 
+				display: block; 
+				text-transform: uppercase; 
+				letter-spacing: 1px;
+				font-weight: bold;
+			}
 
-			@media (max-width: 768px) {
-				.course-container { grid-template-columns: 1fr; }
+			@media (max-width: 1100px) {
+				.course-container { 
+					grid-template-columns: 1fr; 
+					padding: 1rem;
+				}
+				aside.nav-sidebar, aside.ad-sidebar, main.content-area {
+					max-width: 100%;
+					width: 100%;
+				}
+				aside.ad-sidebar {
+					order: 3;
+					display: flex;
+					justify-content: center;
+				}
+				.ad-container {
+					min-height: 250px;
+					width: 300px;
+				}
 			}
 		</style>
 	</head>
 	<body>
-		<Header />
+        <Header 
+            courseTitle={course.data.title} 
+            courseLevel={course.data.levelId.toUpperCase()} 
+        />
+
 		<div class="course-container">
-			<aside>
-				<h2>{course.data.title}</h2>
-                <p>{course.data.levelId.toUpperCase()}</p>
-				<hr />
-				
-				{Object.entries(unitsMap).map(([unitName, los]) => (
+            
+			<aside class="nav-sidebar">
+                {Object.entries(unitsMap).map(([unitName, los]) => (
 					<details open={lo.data.unit === unitName}>
 						<summary>{unitName.replace(/-/g, ' ').toUpperCase()}</summary>
 						<div class="lo-list">
@@ -155,6 +214,13 @@ const unitsMap = courseLOs.reduce((acc, entry) => {
 				<hr />
 				<Content />
 			</main>
+
+            <aside class="ad-sidebar">
+                <div class="ad-container">
+                    <p>Google Ad Banner<br/>(Vertical)</p>
+                </div>
+            </aside>
+
 		</div>
 		<Footer />
 	</body>
