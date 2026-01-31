@@ -1,0 +1,35 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const { frontmatter } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={frontmatter.title} description="Legal documentation" />
+		<style>
+			main {
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 3rem 1rem;
+			}
+			/* Use your prose/text styles */
+			h1 { font-size: 2.5rem; margin-bottom: 0.5em; border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; }
+			h2 { margin-top: 2rem; }
+            ul { margin-bottom: 1rem; }
+            li { margin-bottom: 0.5rem; }
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>{frontmatter.title}</h1>
+            <p><em>Last Updated: {new Date().toLocaleDateString()}</em></p>
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>

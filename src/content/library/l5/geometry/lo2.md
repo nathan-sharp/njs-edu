@@ -1,7 +1,7 @@
 ---
 title: "LO2: Lines"
 unit: "geometry"
-order: 1
+order: 2
 ---
 
 ## Introduction to Variables

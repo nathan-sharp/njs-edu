@@ -5,8 +5,15 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
 
+// 1. Get Courses
 const courses = await getCollection('courses');
+
+// 2. Get Latest 3 News Posts
+const posts = (await getCollection('news')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+).slice(0, 3);
 ---
 
 <!doctype html>
@@ -14,78 +21,200 @@ const courses = await getCollection('courses');
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
+            /* SECTION 1: WELCOME / INFO */
+            .welcome-section {
+                background-color: var(--bg-card); /* White/Navy */
+                border: 1px solid var(--border-color);
+                padding: 3rem 2rem;
+                margin-bottom: 3rem;
+                text-align: center;
+                border-radius: 8px;
+                box-shadow: var(--box-shadow);
+            }
+            .welcome-section h1 {
+                font-size: 2.5rem;
+                color: var(--accent);
+                margin-bottom: 1rem;
+            }
+            .welcome-section p {
+                max-width: 800px;
+                margin: 0 auto 1.5rem auto;
+                font-size: 1.1rem;
+                color: var(--text-main);
+            }
+            .instruction-steps {
+                display: flex;
+                justify-content: center;
+                gap: 2rem;
+                margin-top: 2rem;
+                flex-wrap: wrap;
+            }
+            .step {
+                flex: 1;
+                min-width: 200px;
+                max-width: 300px;
+            }
+            .step-icon {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+                display: block;
+            }
+            .step strong { color: var(--accent); }
+
+            /* SECTION 2: SEARCH (Existing) */
 			.search-section {
 				text-align: center;
-				padding: 4rem 1rem;
-				background: #f0f2f5;
-				margin-bottom: 2rem;
+				padding: 2rem 1rem;
+				background: var(--bg-sidebar); /* Beige/Navy */
+				border-radius: 8px;
+                border: 1px solid var(--border-color);
+				margin-bottom: 4rem;
 			}
 			input#courseSearch {
 				width: 100%;
 				max-width: 600px;
 				padding: 1rem;
 				font-size: 1.2rem;
-				border: 2px solid #ccc;
-				border-radius: 8px;
+				border: 2px solid var(--border-color);
+				border-radius: 4px;
 				margin-top: 1rem;
+                background: var(--bg-body);
+                color: var(--text-main);
 			}
-			.grid {
+			.course-grid {
 				display: grid;
 				grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 				gap: 1.5rem;
-				max-width: 1200px;
-				margin: 0 auto;
-				padding: 0 1rem;
+				margin-top: 2rem;
 			}
-			.card {
-				border: 1px solid #eee;
+			.course-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-color);
 				padding: 1.5rem;
-				border-radius: 12px;
+				border-radius: 8px;
 				transition: transform 0.2s, box-shadow 0.2s;
 				text-decoration: none;
 				color: inherit;
 				display: block;
+                text-align: left;
 			}
-			.card:hover {
+			.course-card:hover {
 				transform: translateY(-3px);
-				box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+				box-shadow: var(--box-shadow);
 				border-color: var(--accent);
 			}
 			.badge {
 				background: var(--accent);
-				color: white;
+				color: white; /* Always white for contrast on accent */
 				padding: 4px 8px;
 				border-radius: 4px;
 				font-size: 0.8em;
 				text-transform: uppercase;
                 font-weight: bold;
+                letter-spacing: 1px;
 			}
+
+            /* SECTION 3: LATEST NEWS */
+            .news-section {
+                margin-top: 4rem;
+            }
+            .news-section h2 {
+                text-align: center;
+                border-bottom: 2px solid var(--border-color);
+                padding-bottom: 1rem;
+                margin-bottom: 2rem;
+            }
+            .news-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 2rem;
+            }
+            .news-card {
+                text-decoration: none;
+                color: var(--text-main);
+                transition: opacity 0.2s;
+            }
+            .news-card:hover { opacity: 0.8; }
+            .news-card img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+                border-radius: 8px;
+                margin-bottom: 0.5rem;
+                border: 1px solid var(--border-color);
+            }
+            .news-card h3 {
+                margin: 0.5rem 0 0.2rem 0;
+                font-size: 1.25rem;
+            }
+            .news-date {
+                font-size: 0.9rem;
+                color: var(--text-muted);
+                font-style: italic;
+            }
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<div class="search-section">
-				<h1>🎓 Find Your Course</h1>
-				<p>Search the database for SCQF learning materials.</p>
-				<input type="text" id="courseSearch" placeholder="e.g. Maths..." />
+            
+            <section class="welcome-section">
+                <h1>Welcome to {SITE_TITLE}</h1>
+                <p>
+                    A comprehensive educational resource designed to support students through the Scottish SCQF curriculum.
+                    Our goal is to provide clear, structured learning materials that are easy to access and study.
+                </p>
+                
+                <div class="instruction-steps">
+                    <div class="step">
+                        <span class="step-icon">🔍</span>
+                        <p><strong>Step 1</strong><br/>Use the search bar below to find your specific course (e.g., National 5 Maths).</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">📚</span>
+                        <p><strong>Step 2</strong><br/>Browse the Learning Outcomes (LOs) in the course menu.</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">📝</span>
+                        <p><strong>Step 3</strong><br/>Study the materials, examples, and exercises provided.</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="search-section">
+				<h2>Find Your Course</h2>
+				<input type="text" id="courseSearch" placeholder="Search for a course (e.g. Maths, Physics)..." />
+                
+                <div class="course-grid" id="courseGrid">
+                    {courses.map((course) => (
+                        <a href={`/courses/${course.id}`} class="course-card" data-title={course.data.title.toLowerCase()}>
+                            <h3>{course.data.title}</h3>
+                            <span class="badge">{course.data.levelId.toUpperCase()}</span>
+                            <p style="margin-top: 0.5rem;">{course.data.description}</p>
+                        </a>
+                    ))}
+                </div>
 			</div>
 
-			<div class="grid" id="courseGrid">
-				{courses.map((course) => (
-					<a href={`/courses/${course.id}`} class="card" data-title={course.data.title.toLowerCase()}>
-						<h3>{course.data.title}</h3>
-                        <span class="badge">{course.data.levelId.toUpperCase()}</span>
-						<p>{course.data.description}</p>
-					</a>
-				))}
-			</div>
+            <section class="news-section">
+                <h2>Latest News</h2> <div class="news-grid">
+                    {posts.map((post) => (
+                        <a href={`/news/${post.id}/`} class="news-card"> <img width={720} height={360} src={post.data.heroImage} alt="" />
+                            <h3>{post.data.title}</h3>
+                            <div class="news-date">
+                                <FormattedDate date={post.data.pubDate} />
+                            </div>
+                        </a>
+                    ))}
+                </div>
+            </section>
+
 		</main>
 		<Footer />
 
 		<script>
 			const input = document.getElementById('courseSearch');
-			const cards = document.querySelectorAll('.card');
+			const cards = document.querySelectorAll('.course-card');
 
 			input.addEventListener('input', (e) => {
 				const term = e.target.value.toLowerCase();

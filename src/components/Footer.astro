@@ -1,6 +1,7 @@
 ---
 import { SITE_TITLE } from '../consts';
 import ThemeToggle from './ThemeToggle.astro';
+import CookieConsent from './CookieConsent.astro'; // <--- Import Component
 
 const today = new Date();
 ---
@@ -9,21 +10,26 @@ const today = new Date();
     <div class="footer-content">
         <div class="copyright">
             &copy; {today.getFullYear()} {SITE_TITLE}. All rights reserved.
+            <span class="legal-links">
+                | <a href="/privacy">Privacy</a> | <a href="/cookies">Cookies</a>
+            </span>
         </div>
         
         <div class="theme-toggle-container">
             <ThemeToggle />
         </div>
     </div>
+    
+    <CookieConsent /> 
 </footer>
 
 <style>
 	footer {
-		padding: 2em 1em 4em 1em; /* Added extra bottom padding */
+		padding: 2em 1em 4em 1em;
 		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
+		color: var(--text-muted); /* Updated to use variable */
 		text-align: center;
-        border-top: 1px solid rgba(var(--gray), 0.2);
+        border-top: 1px solid var(--border-color); /* Updated to use variable */
         margin-top: 2rem;
 	}
     
@@ -35,8 +41,17 @@ const today = new Date();
         max-width: 1200px;
         margin: 0 auto;
     }
+    
+    .legal-links a {
+        color: inherit;
+        text-decoration: none;
+        font-size: 0.9em;
+    }
+    .legal-links a:hover {
+        text-decoration: underline;
+        color: var(--accent);
+    }
 
-    /* On larger screens, put copyright left and toggle right */
     @media (min-width: 600px) {
         .footer-content {
             flex-direction: row;
