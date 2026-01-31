@@ -58,6 +58,7 @@ const courses = await getCollection('courses');
 				border-radius: 4px;
 				font-size: 0.8em;
 				text-transform: uppercase;
+                font-weight: bold;
 			}
 		</style>
 	</head>
@@ -67,14 +68,14 @@ const courses = await getCollection('courses');
 			<div class="search-section">
 				<h1>🎓 Find Your Course</h1>
 				<p>Search the database for SCQF learning materials.</p>
-				<input type="text" id="courseSearch" placeholder="e.g. National 5 Maths..." />
+				<input type="text" id="courseSearch" placeholder="e.g. Maths..." />
 			</div>
 
 			<div class="grid" id="courseGrid">
 				{courses.map((course) => (
 					<a href={`/courses/${course.id}`} class="card" data-title={course.data.title.toLowerCase()}>
 						<h3>{course.data.title}</h3>
-						<span class="badge">{course.data.level}</span>
+                        <span class="badge">{course.data.levelId.toUpperCase()}</span>
 						<p>{course.data.description}</p>
 					</a>
 				))}

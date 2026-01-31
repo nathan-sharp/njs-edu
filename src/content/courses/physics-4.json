@@ -1,0 +1,10 @@
+{
+  "title": "Physics",
+  "description": "A comprehensive course covering level 4 Physics.",
+  "level": "l4",
+  "levelId": "l4",
+  "units": [
+    "algebra", 
+    "geometry"
+  ]
+}

@@ -1,64 +1,95 @@
-# Astro Starter Kit: Blog
+# N J Sharp Education - Resource Site
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/astro-blog-starter-template)
+This is an educational resource site built with [Astro](https://astro.build) and designed to run on Cloudflare Pages. It features a **Central Content Library** (for Learning Outcomes) and a **Course Database** (defining course structures).
 
-![Astro Template Preview](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
+## 📚 Content Management Guide
 
-<!-- dash-content-start -->
+This site uses two distinct content collections: **Courses** (JSON data) and **Library** (Markdown content).
 
-Create a blog with Astro and deploy it on Cloudflare Workers as a [static website](https://developers.cloudflare.com/workers/static-assets/).
+### 1. How to Add a New Course
+Courses are defined as JSON files in `src/content/courses/`.
 
-Features:
+1.  Create a new file, e.g., `src/content/courses/maths-n5.json`.
+2.  Add the following structure:
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-- ✅ Built-in Observability logging
-
-<!-- dash-content-end -->
-
-## Getting Started
-
-Outside of this repo, you can start a new project with this template using [C3](https://developers.cloudflare.com/pages/get-started/c3/) (the `create-cloudflare` CLI):
-
-```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/astro-blog-starter-template
+```json
+{
+  "title": "Mathematics",
+  "description": "The complete National 5 Mathematics course.",
+  "level": "National 5",
+  "levelId": "l5",
+  "units": [
+    "algebra",
+    "geometry",
+    "trigonometry"
+  ]
+}
 ```
 
-A live public deployment of this template is available at [https://astro-blog-starter-template.templates.workers.dev](https://astro-blog-starter-template.templates.workers.dev)
+* level: The human-readable text shown on badges (e.g., "National 5").
 
-## 🚀 Project Structure
+* levelId: Crucial. This ID (e.g., "l5") tells the system which folder to look inside within the Content Library.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+* units: A list of unit IDs. These IDs link the course to the specific Markdown files in the library.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+2. How to Add Units & Learning Outcomes (LOs)
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+All teaching material lives in src/content/library/. The structure is organized by Level Folder > Unit Folder > LO File.
 
-Any static assets, like images, can be placed in the `public/` directory.
+**Step A: Create the Structure**
 
-## 🧞 Commands
+If you defined "levelId": "l5" and a unit "algebra" in your course, you must create this exact path: src/content/library/l5/algebra/
+
+**Step B: Add an LO File**
+
+Create a Markdown file for the learning outcome, e.g., src/content/library/l5/algebra/lo1-variables.md.
+
+``` Markdown
+---
+title: "LO1: Understanding Variables"
+unit: "algebra"
+order: 1
+---
+
+## Introduction
+Write your educational content here using Markdown or MDX...
+```
+
+* title: The name of the LO shown in the menu.
+
+* unit: Must match the string used in your Course JSON units list.
+
+* order: Controls the sort order in the sidebar menu (1, 2, 3...).
+
+3. Reusing Unit Names (Multi-Level)
+
+You can have an "Algebra" unit in Level 5 and Level 6 without conflict.
+
+    Level 5 Course: Set "levelId": "l5" and include "algebra" in units.
+
+        System looks in: src/content/library/l5/algebra/
+
+    Level 6 Course: Set "levelId": "l6" and include "algebra" in units.
+
+        System looks in: src/content/library/l6/algebra/
+
+This allows you to keep unit names simple ("algebra", "calculus") while keeping the difficulty levels strictly separated in folders.
+
+Technical Setup & Commands
+
+Inside of your project, you'll see the following folders and files:
+File/Folder	Description
+src/content/courses/	Database: JSON files defining courses.
+src/content/library/	Content: Markdown/MDX files organized by level/unit.
+src/pages/	Astro routes (URL structure).
+public/	Static assets like images and fonts.
+
+Commands
 
 All commands are run from the root of the project, from a terminal:
-
-| Command                           | Action                                           |
-| :-------------------------------- | :----------------------------------------------- |
-| `npm install`                     | Installs dependencies                            |
-| `npm run dev`                     | Starts local dev server at `localhost:4321`      |
-| `npm run build`                   | Build your production site to `./dist/`          |
-| `npm run preview`                 | Preview your build locally, before deploying     |
-| `npm run astro ...`               | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help`         | Get help using the Astro CLI                     |
-| `npm run build && npm run deploy` | Deploy your production site to Cloudflare        |
-| `npm wrangler tail`               | View real-time logs for all Workers              |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+Command	Action
+npm install	Installs dependencies
+npm run dev	Starts local dev server at localhost:4321
+npm run build	Build your production site to ./dist/
+npm run preview	Preview your build locally, before deploying
+npm run deploy	Deploy your production site to Cloudflare
