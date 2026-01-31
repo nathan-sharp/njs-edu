@@ -1,0 +1,9 @@
+{
+  "title": "Mathematics",
+  "description": "A comprehensive course covering National 5 Mathematics.",
+  "level": "National 5",
+  "units": [
+    "algebra-basics", 
+    "geometry"
+  ]
+}

@@ -1,0 +1,155 @@
+---
+// src/pages/courses/[courseId]/[...slug].astro
+import { getCollection, render } from 'astro:content';
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+export async function getStaticPaths() {
+	const courses = await getCollection('courses');
+	const library = await getCollection('library');
+
+	return courses.flatMap((course) => {
+		// 1. Get all LOs for this course
+		const courseLOs = library.filter((entry) => 
+			course.data.units.includes(entry.data.unit)
+		);
+
+		// 2. Sort LOs by their 'order' field
+		courseLOs.sort((a, b) => a.data.order - b.data.order);
+
+		// 3. Generate routes for each individual LO
+		const routes = courseLOs.map((lo) => {
+			// Create a clean slug: unit-name/lo-filename
+			const slug = `${lo.data.unit}/${lo.id.split('/').pop()}`;
+			return {
+				params: { courseId: course.id, slug },
+				props: { course, lo, courseLOs },
+			};
+		});
+
+		// 4. Generate the "root" route (/courses/maths-n5)
+		// This redirects the user to the very first LO in the course
+		if (courseLOs.length > 0) {
+			routes.push({
+				params: { courseId: course.id, slug: undefined },
+				props: { course, lo: courseLOs[0], courseLOs },
+			});
+		}
+
+		return routes;
+	});
+}
+
+const { course, lo, courseLOs } = Astro.props;
+const { Content } = await render(lo);
+
+// Helper: Group LOs by Unit ID for the sidebar menu
+const unitsMap = courseLOs.reduce((acc, entry) => {
+	const unitKey = entry.data.unit;
+	if (!acc[unitKey]) acc[unitKey] = [];
+	acc[unitKey].push(entry);
+	return acc;
+}, {});
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`${lo.data.title} - ${course.data.title}`} description={course.data.description} />
+		<style>
+			.course-container {
+				display: grid;
+				grid-template-columns: 280px 1fr;
+				gap: 2rem;
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 2rem 1rem;
+				min-height: 80vh;
+			}
+			aside {
+				background: #f8f9fa;
+				padding: 1.5rem;
+				border-radius: 8px;
+				height: fit-content;
+			}
+			details { margin-bottom: 0.5rem; }
+			summary {
+				cursor: pointer;
+				font-weight: bold;
+				padding: 0.5rem;
+				list-style: none;
+				background-color: #fff;
+				border: 1px solid #eee;
+				border-radius: 4px;
+			}
+			summary::-webkit-details-marker { display: none; }
+			summary::after { content: "+"; float: right; }
+			details[open] summary::after { content: "-"; }
+			
+			.lo-list {
+				margin-top: 0.5rem;
+				display: flex;
+				flex-direction: column;
+				gap: 0.25rem;
+			}
+			.lo-link {
+				text-decoration: none;
+				color: #444;
+				padding: 0.4rem 0.4rem 0.4rem 1rem;
+				font-size: 0.95rem;
+				border-left: 3px solid transparent;
+			}
+			.lo-link:hover { color: var(--accent); background: #eee; }
+			.lo-link.active {
+				border-left-color: var(--accent);
+				color: var(--accent);
+				font-weight: bold;
+				background: #eef2ff;
+			}
+			.content-area { padding: 0 1rem; }
+
+			@media (max-width: 768px) {
+				.course-container { grid-template-columns: 1fr; }
+				aside { margin-bottom: 2rem; }
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<div class="course-container">
+			<aside>
+				<h2>{course.data.title}</h2>
+				<p class="level-badge">{course.data.level}</p>
+				<hr />
+				
+				{Object.entries(unitsMap).map(([unitName, los]) => (
+					<details open={lo.data.unit === unitName}>
+						<summary>{unitName.replace(/-/g, ' ').toUpperCase()}</summary>
+						<div class="lo-list">
+							{los.map((entry) => {
+								// Reconstruct the slug to match getStaticPaths
+								const entrySlug = `${entry.data.unit}/${entry.id.split('/').pop()}`;
+								return (
+									<a 
+										href={`/courses/${course.id}/${entrySlug}`}
+										class={`lo-link ${lo.id === entry.id ? 'active' : ''}`}
+									>
+										{entry.data.title}
+									</a>
+								);
+							})}
+						</div>
+					</details>
+				))}
+			</aside>
+			
+			<main class="content-area">
+				<h1>{lo.data.title}</h1>
+				<hr />
+				<Content />
+			</main>
+		</div>
+		<Footer />
+	</body>
+</html>
