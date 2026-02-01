@@ -1,18 +1,22 @@
 ---
 import { SITE_TITLE } from '../consts';
 import ThemeToggle from './ThemeToggle.astro';
-import CookieConsent from './CookieConsent.astro'; // <--- Import Component
+import CookieConsent from './CookieConsent.astro';
 
 const today = new Date();
 ---
 
 <footer>
     <div class="footer-content">
-        <div class="copyright">
-            &copy; {today.getFullYear()} {SITE_TITLE}. All rights reserved.
-            <span class="legal-links">
-                | <a href="/privacy">Privacy</a> | <a href="/cookies">Cookies</a>
-            </span>
+        <div class="footer-left">
+            <img src="/media/shield.png" alt="NJSharp Crest" class="footer-logo" width="60" height="60" />
+            
+            <div class="copyright">
+                &copy; {today.getFullYear()} {SITE_TITLE}. All rights reserved.
+                <span class="legal-links">
+                    | <a href="/privacy">Privacy</a> | <a href="/cookies">Cookies</a>
+                </span>
+            </div>
         </div>
         
         <div class="theme-toggle-container">
@@ -20,16 +24,16 @@ const today = new Date();
         </div>
     </div>
     
-    <CookieConsent /> 
+    <CookieConsent />
 </footer>
 
 <style>
 	footer {
 		padding: 2em 1em 4em 1em;
 		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: var(--text-muted); /* Updated to use variable */
+		color: var(--text-muted);
 		text-align: center;
-        border-top: 1px solid var(--border-color); /* Updated to use variable */
+        border-top: 1px solid var(--border-color);
         margin-top: 2rem;
 	}
     
@@ -37,9 +41,25 @@ const today = new Date();
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1rem;
+        gap: 1.5rem;
         max-width: 1200px;
         margin: 0 auto;
+    }
+
+    .footer-left {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex-direction: column;
+    }
+    
+    /* STRICT FOOTER LOGO SIZING */
+    .footer-logo {
+        height: 60px;       /* STRICT: Force exact height */
+        width: auto;        /* Allow width to adjust */
+        max-width: 200px;   /* Safety constraint */
+        object-fit: contain;
+        opacity: 0.8;
     }
     
     .legal-links a {
@@ -56,6 +76,10 @@ const today = new Date();
         .footer-content {
             flex-direction: row;
             justify-content: space-between;
+        }
+        .footer-left {
+            flex-direction: row;
+            text-align: left;
         }
     }
 </style>

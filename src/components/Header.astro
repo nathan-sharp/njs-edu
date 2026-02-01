@@ -2,13 +2,16 @@
 import HeaderLink from './HeaderLink.astro';
 import { SITE_TITLE } from '../consts';
 
-// Receive optional props for Course pages
 const { courseTitle, courseLevel } = Astro.props;
 ---
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+        <a href="/" class="logo-container">
+            <img src="/media/shield.png" alt="NJSharp Crest" class="site-logo" width="40" height="40" />
+            <span class="site-name">{SITE_TITLE}</span>
+        </a>
+
 		<div class="internal-links">
 			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/news">News</HeaderLink>
@@ -17,11 +20,13 @@ const { courseTitle, courseLevel } = Astro.props;
 
 		<div class="header-right">
 			{courseTitle ? (
+                /* 1. Show Course Title if we are on a course page */
 				<div class="course-meta">
 					<span class="c-title">{courseTitle}</span>
 					<span class="c-badge">{courseLevel}</span>
 				</div>
 			) : (
+                /* 2. Show Social Icons if we are on Home/About pages */
 				<div class="social-links">
 					<a href="https://bsky.app/profile/njsharp.uk" target="_blank">
 						<span class="sr-only">Follow NJSharp on Bluesky</span>
@@ -46,44 +51,81 @@ const { courseTitle, courseLevel } = Astro.props;
 		</div>
 	</nav>
 </header>
+
 <style>
 	header {
 		margin: 0;
 		padding: 0 1em;
-		background: var(--bg-header); /* UPDATED */
+		background: var(--bg-header);
 		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-		transition: background-color 0.3s ease; /* Smooth toggle */
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
+        height: 70px;
+        display: flex;
+        align-items: center;
 	}
 
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
-	}
 	nav {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+        width: 100%;
+        height: 100%;
 	}
+
+    .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--text-main);
+        height: 100%;
+    }
+    
+    .site-logo {
+        height: 40px;
+        width: auto;
+        max-width: 150px;
+        object-fit: contain;
+    }
+
+    .site-name {
+        font-weight: bold;
+        font-size: 1.4em;
+        font-family: "Times New Roman", serif;
+        white-space: nowrap;
+    }
+    
+    .internal-links {
+        display: flex;
+        gap: 1rem;
+    }
+
 	nav a {
-		padding: 1em 0.5em;
-		color: var(--text-main); /* UPDATED from var(--black) to usually match main text */
+		padding: 0.5em 0.5em;
+		color: var(--text-main);
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
 	}
+
 	nav a.active {
 		text-decoration: none;
 		border-bottom-color: var(--accent);
 	}
-	.social-links,
+	
+	/* SOCIAL LINKS STYLES */
+	.social-links {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
 	.social-links a {
 		display: flex;
+		color: var(--text-main);
+		transition: color 0.2s;
 	}
-	
-	/* NEW STYLES FOR COURSE HEADER */
+	.social-links a:hover {
+		color: var(--accent);
+	}
+
 	.course-meta {
 		display: flex;
 		align-items: center;
@@ -92,7 +134,7 @@ const { courseTitle, courseLevel } = Astro.props;
 	.c-title {
 		font-weight: 700;
 		font-size: 1.1em;
-		color: var(--text-main); /* UPDATED from #333 */
+		color: var(--text-main);
 	}
 	.c-badge {
 		background-color: var(--accent);
@@ -105,12 +147,11 @@ const { courseTitle, courseLevel } = Astro.props;
 	}
 
 	@media (max-width: 720px) {
-		.social-links {
+		.social-links, .course-meta {
 			display: none;
 		}
-		/* Keep course info visible on mobile if you want, or hide it like social links */
-		.course-meta {
-			display: none; 
-		}
+        .site-name {
+            display: none; 
+        }
 	}
 </style>

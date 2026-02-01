@@ -1,0 +1,80 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`404 - Page Not Found | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+		<style>
+			main {
+				text-align: center;
+				padding-top: 4rem;
+				padding-bottom: 4rem;
+                min-height: 60vh; /* Ensure footer stays at bottom */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+			}
+            
+            h1 {
+                font-size: 4rem;
+                color: var(--accent);
+                margin-bottom: 0.5rem;
+            }
+            
+            p {
+                font-size: 1.5rem;
+                color: var(--text-main);
+                margin-bottom: 2rem;
+            }
+            
+            .error-code {
+                font-size: 8rem;
+                font-weight: bold;
+                line-height: 1;
+                color: var(--border-color); /* Subtle background color for the number */
+                margin: 0;
+                opacity: 0.5;
+            }
+
+            .back-btn {
+                display: inline-block;
+                padding: 0.8rem 2rem;
+                background-color: var(--accent);
+                color: white; /* Contrast for light mode */
+                text-decoration: none;
+                border-radius: 4px;
+                font-weight: bold;
+                transition: background-color 0.2s, transform 0.2s;
+            }
+
+            /* Dark mode text adjustment for button if needed */
+            :global([data-theme='dark']) .back-btn {
+                color: var(--p-navy-dark);
+            }
+
+            .back-btn:hover {
+                background-color: var(--accent-hover);
+                text-decoration: none;
+                transform: translateY(-2px);
+            }
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+            <div class="error-code">404</div>
+			<h1>Page Not Found</h1>
+			<p>
+                The page you are looking for has been moved, removed, or does not exist.
+            </p>
+            <a href="/" class="back-btn">Return Home</a>
+		</main>
+		<Footer />
+	</body>
+</html>

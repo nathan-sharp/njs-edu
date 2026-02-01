@@ -1,4 +1,4 @@
-# N J Sharp Education - Resource Site
+# NJSharp - Resource Site
 
 This is an educational resource site built with [Astro](https://astro.build) and designed to run on Cloudflare Pages. It features a **Central Content Library** (for Learning Outcomes) and a **Course Database** (defining course structures).
 

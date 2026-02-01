@@ -4,7 +4,7 @@ title: Privacy Policy
 ---
 
 ## Introduction
-Welcome to **N J Sharp Education**. We are committed to protecting your personal information and your right to privacy.
+Welcome to **NJSharp**. We are committed to protecting your personal information and your right to privacy.
 
 ## Information We Collect
 We collect minimal information necessary to operate this educational resource site.
